@@ -1,0 +1,6 @@
+Flask==2.3.3 # Ou a versão que você está usando
+gunicorn==20.1.0
+pandas==2.0.3 # Assumindo que você usa pandas para manipulação de dados
+scikit-learn==1.3.0 # Assumindo que você usa scikit-learn para cálculos de hot/cold numbers
+openpyxl==3.1.2 # Se você lê arquivos .xlsx (geralmente necessário para pandas ler Excel)
+python-dotenv==1.0.0 # Se você usa para gerenciar variáveis de ambiente locais
