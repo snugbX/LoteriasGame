@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: loteriasgame
+    env: python
+    plan: free
+    buildCommand: |
+      cd src
+      pip install --upgrade pip setuptools wheel
+      pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    pythonVersion: 3.11.9
