@@ -1,10 +1,10 @@
 Flask==2.3.3
 gunicorn==20.1.0
-pandas==2.0.3
+pandas==1.5.3
 openpyxl==3.1.2
 python-dotenv==1.0.0
-setuptools==68.0.0 # Adicionado para auxiliar na compilação
-wheel==0.41.2 # Adicionado para auxiliar na compilação
-numpy==1.24.4 # Instalado antes do scikit-learn
-scipy==1.11.1 # Instalado antes do scikit-learn
-scikit-learn==1.3.0 # A versão pode ser um fator, mas tentamos a ordem primeiro
+setuptools==65.5.1
+wheel==0.38.4
+numpy==1.23.5
+scipy==1.10.1
+scikit-learn==1.2.2
