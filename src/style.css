@@ -1,0 +1,318 @@
+/* Variable Definitions for Theming */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Cores padrão (tema claro) */
+    --bg-primary: #f3f4f6; /* gray-100 */
+    --bg-secondary: #ffffff; /* white */
+    --text-primary: #1f2937; /* gray-800 */
+    --text-secondary: #374151; /* gray-700 */
+    --border-color: #e5e7eb; /* gray-200 */
+    --input-border-focus: #8b5cf6; /* purple-500 */
+    --input-shadow-focus: rgba(139, 92, 246, 0.6); /* purple-500 com opacidade */
+    --input-border-hover: #a78bfa; /* purple-400 */
+    --input-shadow-hover: rgba(167, 139, 250, 0.5); /* purple-400 com opacidade */
+
+    /* Tamanhos de fonte padrão */
+    --base-font-size: 16px;
+    --h1-font-size: 2.25rem; /* 36px */
+    --h2-font-size: 1.5rem;  /* 24px */
+    --h3-font-size: 1.25rem; /* 20px */
+    --label-font-size: 0.875rem; /* 14px */
+    --button-font-size: 1em; /* padrão dos botões */
+    --ball-font-size: 1em; /* padrão das bolinhas */
+    --modal-title-size: 1.5em; /* padrão do modal */
+    --modal-message-size: 1.1em; /* padrão do modal */
+}
+
+/* Tema escuro */
+body.dark-theme {
+    --bg-primary: #1a202c; /* gray-900 */
+    --bg-secondary: #2d3748; /* gray-800 */
+    --text-primary: #e2e8f0; /* gray-200 */
+    --text-secondary: #cbd5e0; /* gray-300 */
+    --border-color: #4a5568; /* gray-600 */
+    --input-border-focus: #a78bfa; /* purple-400 */
+    --input-shadow-focus: rgba(167, 139, 250, 0.6);
+    --input-border-hover: #c4b5fd; /* purple-300 */
+    --input-shadow-hover: rgba(196, 181, 253, 0.5);
+}
+
+/* Global / Base Styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+.container {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+.hidden {
+    display: none !important;
+}
+
+/* Headings */
+h1 {
+    color: var(--text-primary);
+    font-size: var(--h1-font-size);
+}
+h2 {
+    color: var(--text-secondary);
+    font-size: var(--h2-font-size);
+}
+h3 {
+    color: var(--text-secondary);
+    font-size: var(--h3-font-size);
+}
+
+/* Labels, Selects, Inputs */
+label {
+    color: var(--text-secondary);
+    font-size: var(--label-font-size);
+}
+select, input[type="number"] {
+    border-color: var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: var(--base-font-size);
+}
+select:hover, input[type="number"]:hover {
+    border-color: var(--input-border-hover);
+    box-shadow: var(--input-shadow-hover);
+}
+select:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: var(--input-border-focus);
+    box-shadow: var(--input-shadow-focus);
+}
+
+/* Number Balls */
+.number-ball {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    /* Ajustado para usar 'em' para redimensionamento proporcional com a fonte */
+    width: 2.4em;   /* Aproximadamente 38px quando a fonte base é 16px */
+    height: 2.4em;  /* Aproximadamente 38px quando a fonte base é 16px */
+    line-height: 1; /* Garante que o texto ocupe apenas sua altura, para melhor espaçamento vertical */
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    font-size: var(--ball-font-size);
+    margin: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+.number-ball.hot {
+    background-color: #EF4444; /* red-500 */
+}
+.number-ball.cold {
+    background-color: #6B7280; /* gray-500 */
+}
+
+/* Scrollbar Styles */
+#historico-arquivos-lista-modal::-webkit-scrollbar,
+#historico-conteudo-jogos-wrapper-modal::-webkit-scrollbar,
+#jogos-gerados-modal-display::-webkit-scrollbar,
+#hot-numbers-list-modal::-webkit-scrollbar,
+#cold-numbers-list-modal::-webkit-scrollbar {
+    width: 8px;
+}
+#historico-arquivos-lista-modal::-webkit-scrollbar-track,
+#historico-conteudo-jogos-wrapper-modal::-webkit-scrollbar-track,
+#jogos-gerados-modal-display::-webkit-scrollbar-track,
+#hot-numbers-list-modal::-webkit-scrollbar-track,
+#cold-numbers-list-modal::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+#historico-arquivos-lista-modal::-webkit-scrollbar-thumb,
+#historico-conteudo-jogos-wrapper-modal::-webkit-scrollbar-thumb,
+#jogos-gerados-modal-display::-webkit-scrollbar-thumb,
+#hot-numbers-list-modal::-webkit-scrollbar-thumb,
+#cold-numbers-list-modal::-webkit-scrollbar-thumb {
+    background: var(--text-secondary);
+    border-radius: 10px;
+}
+#historico-arquivos-lista-modal::-webkit-scrollbar-thumb:hover,
+#historico-conteudo-jogos-wrapper-modal::-webkit-scrollbar-thumb:hover,
+#jogos-gerados-modal-display::-webkit-scrollbar-thumb:hover,
+#hot-numbers-list-modal::-webkit-scrollbar-thumb:hover,
+#cold-numbers-list-modal::-webkit-scrollbar-thumb:hover {
+    background: var(--text-primary);
+}
+
+/* Animation */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.animate-fadeInScale {
+    animation: fadeInScale 0.3s ease-out forwards;
+}
+
+/* Modal Base Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: var(--bg-secondary);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px; /* Default for confirmation/success */
+    width: 90%;
+    color: var(--text-primary);
+}
+.modal-content h3 {
+    color: var(--text-primary);
+    font-size: var(--modal-title-size);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.modal-content p {
+    color: var(--text-secondary);
+    font-size: var(--modal-message-size);
+    margin-bottom: 25px;
+}
+.modal-buttons button {
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin: 0 10px;
+}
+.modal-buttons .confirm-btn {
+    background-color: #EF4444; /* red-500 */
+    color: white;
+    border: none;
+}
+.modal-buttons .confirm-btn:hover {
+    background-color: #DC2626; /* red-600 */
+    transform: scale(1.05);
+}
+.modal-buttons .cancel-btn {
+    background-color: var(--border-color);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+.modal-buttons .cancel-btn:hover {
+    background-color: var(--input-border-hover);
+    color: white;
+}
+
+/* Specific Modal Z-indices (ensuring correct stacking order) */
+/*
+  Hierarchy (higher Z-index = on top):
+  1. Fixed controls (z-index: 1004) - always on top of everything.
+  2. Success Modal (z-index: 1003) - appears above other functional modals.
+  3. Confirmation Modal (z-index: 1001) - for user confirmation actions (e.g., delete).
+  4. Content Modals (History, Generated Games, Assistance) (z-index: 1000) - main content overlays.
+*/
+#custom-confirm-modal {
+    z-index: 1001;
+}
+#history-modal-overlay,
+#generated-games-modal-overlay,
+#assistencia-modal-overlay {
+    z-index: 1000;
+}
+/* NEW: Properties for smooth transition and initial hidden state for success modal */
+.success-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Slightly lighter overlay for success */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Start invisible */
+    visibility: hidden; /* Hide from layout */
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out; /* Smooth transition for overlay */
+    z-index: 1003; /* Ensures it's on top */
+}
+
+/* When success modal is NOT hidden (i.e., displayed by JS) */
+.success-modal-overlay:not(.hidden) {
+    opacity: 1; /* Fade in */
+    visibility: visible; /* Make visible */
+}
+
+/* Success Modal Content (inner box) */
+.success-modal-content {
+    background-color: #D1FAE5; /* green-100 */
+    border: 2px solid #34D399; /* green-500 */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    color: #065F46; /* green-900 */ /* Set text color for content directly */
+    transform: translateY(-20px); /* Start slightly above for slide-in effect */
+    transition: transform 0.3s ease-out; /* Smooth slide-in transition for content */
+}
+
+/* When success modal is NOT hidden, content slides into place */
+.success-modal-overlay:not(.hidden) .success-modal-content {
+    transform: translateY(0);
+}
+
+/* General message paragraph inside success modal */
+.success-modal-content p {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #065F46; /* green-900 */
+    margin-bottom: 0;
+}
+
+
+/* History, Generated Games, and Assistance Modal Specifics */
+#history-modal-overlay .modal-content,
+#generated-games-modal-overlay .modal-content,
+#assistencia-modal-overlay .modal-content {
+    max-width: 800px; /* Wider for better content display */
+    max-height: 90vh; /* Limit height to prevent overflow on small screens */
+    overflow-y: auto; /* Enable scrolling for content if it exceeds modal height */
+}
+
+/* Table styles (from user's style.css, ensure no conflict with ball display) */
+#historico-conteudo-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+#historico-conteudo-tabela th, #historico-conteudo-tabela td {
+    border: 1px solid var(--border-color); /* Use theme variable */
+    padding: 8px;
+    text-align: center;
+}
+#historico-conteudo-tabela th {
+    background-color: var(--bg-primary); /* Use theme variable */
+    font-weight: bold;
+    font-size: var(--label-font-size); /* Use font variable */
+    color: var(--text-secondary); /* Use theme variable */
+}
+#historico-conteudo-tabela tbody tr:nth-child(even) {
+    background-color: var(--bg-primary); /* Use theme variable, slightly different shade for stripe */
+}
+#historico-conteudo-tabela tbody tr:hover {
+    background-color: var(--input-border-hover); /* Use theme variable */
+}
