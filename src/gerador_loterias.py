@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime
 import logging
+import joblib
 
 # Define a raiz do projeto (um nível acima da pasta 'src')
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -150,6 +151,57 @@ def generate_single_set(probabilidades, num_to_draw, min_num, max_num):
 
     return sorted(list(set_of_numbers))
 
+def load_trained_model(lottery_type):
+    model_path = f"{lottery_type}_model.pkl"
+    if os.path.exists(model_path):
+        return joblib.load(model_path)
+    return None
+
+def generate_single_set_with_ml(model, max_num, num_to_draw, training_data=None):
+    import numpy as np
+    if training_data is not None and len(training_data) > 0:
+        base_input = training_data[np.random.randint(0, len(training_data))]
+    else:
+        base_input = [0] * max_num
+
+    prediction = model.predict([base_input])[0]
+    predicted_indices = [i+1 for i, val in enumerate(prediction) if val == 1]
+
+    final_set = sorted(list(set(predicted_indices)))[:num_to_draw]
+    while len(final_set) < num_to_draw:
+        rand = np.random.randint(1, max_num + 1)
+        if rand not in final_set:
+            final_set.append(rand)
+
+    return sorted(final_set)
+
+def generate_single_set_with_ml_proba(model, max_num, num_to_draw):
+    import numpy as np
+
+    # Dummy input (semelhante ao treino)
+    dummy_input = [[0] * max_num]
+
+    try:
+        # Obtemos as probabilidades preditas para cada classe (0 ou 1) por número
+        proba_list = model.predict_proba(dummy_input)
+
+        # Seleciona a probabilidade de classe 1 (presente no jogo)
+        probs = [proba[0][1] if isinstance(proba, list) or isinstance(proba, np.ndarray) else 0.0 for proba in proba_list]
+
+        # Normaliza as probabilidades para somar 1
+        prob_sum = sum(probs)
+        if prob_sum == 0:
+            probs = [1 / max_num] * max_num
+        else:
+            probs = [p / prob_sum for p in probs]
+
+        # Sorteia sem repetição com base nessas probabilidades
+        chosen = np.random.choice(range(1, max_num + 1), size=num_to_draw, replace=False, p=probs)
+        return sorted([int(n) for n in chosen])
+    except Exception as e:
+        print("Erro ao usar predict_proba:", e)
+        return sorted(np.random.choice(range(1, max_num + 1), size=num_to_draw, replace=False))
+
 # Função principal para gerar N jogos de uma loteria específica
 def generate_n_lottery_games(lottery_type, num_games_to_generate=None):
     """
@@ -176,16 +228,28 @@ def generate_n_lottery_games(lottery_type, num_games_to_generate=None):
     
     all_generated_games = []
 
+    model = load_trained_model(lottery_type)
+
     for _ in range(num_games):
-        main_numbers = generate_single_set(
-            prob_main_numbers,
-            config['NUM_BALLS_TO_DRAW'],
-            config['MIN_NUMBER'],
-            config['MAX_NUMBER']
-        )
+        if model:
+            main_numbers = generate_single_set_with_ml_proba(
+                model,
+                config['MAX_NUMBER'],
+                config['NUM_BALLS_TO_DRAW']
+            )
+        else:
+            main_numbers = generate_single_set(
+                prob_main_numbers,
+                config['NUM_BALLS_TO_DRAW'],
+                config['MIN_NUMBER'],
+                config['MAX_NUMBER']
+            )
         all_generated_games.append(main_numbers)
-            
+
+    # Conversão para int padrão do Python
+    all_generated_games = [[int(num) for num in jogo] for jogo in all_generated_games]
     return all_generated_games
+
 
 # Função para salvar jogos gerados em um arquivo CSV
 def save_generated_games_to_csv(jogos, lottery_type, output_dir):
