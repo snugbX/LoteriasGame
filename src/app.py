@@ -3,6 +3,10 @@ import gerador_loterias # Importa o módulo de geração de loterias
 import os
 import re # Para expressões regulares
 import pandas as pd # Importa pandas para ler CSV
+import threading
+import webbrowser
+import time
+import socket
 
 # Inicializa a aplicação Flask.
 # O parâmetro static_folder='.' indica que o Flask deve procurar arquivos estáticos
@@ -204,7 +208,19 @@ def delete_single_file(filename):
         gerador_loterias.logging.error(f"Erro ao deletar arquivo '{filename}': {e}")
         return jsonify({"error": "Erro ao deletar arquivo."}), 500
 
+def abrir_navegador():
+    time.sleep(1)
+    hostname = socket.gethostname()
+    ip_local = socket.gethostbyname(hostname)
+    url = f"http://{ip_local}:5000"
+    webbrowser.open_new(url)
+
 if __name__ == '__main__':
     # Certifica-se de que o diretório de saída para os resultados CSV exista.
     os.makedirs(gerador_loterias.OUTPUT_DIR, exist_ok=True)
-    app.run(debug=True)
+    
+    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        threading.Thread(target=abrir_navegador).start()
+        
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
